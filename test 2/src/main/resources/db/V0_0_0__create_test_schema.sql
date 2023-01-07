@@ -1,0 +1,7 @@
+CREATE SCHEMA IF NOT EXISTS test;
+
+CREATE TABLE IF NOT EXISTS users(
+    username VARCHAR(250) PRIMARY KEY,
+    password VARCHAR(250) NOT NULL,
+    token VARCHAR(250)
+    )
