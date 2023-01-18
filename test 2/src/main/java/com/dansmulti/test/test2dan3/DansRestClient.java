@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,22 +23,22 @@ public class DansRestClient {
     @Autowired
     DansMultiUrl dansMultiUrl;
 
-    public List<Job> getJobs() {
+    public Object getJobs() {
         String urlTemplate = UriComponentsBuilder.fromHttpUrl(dansMultiUrl.getList())
                 .encode()
                 .toUriString();
         return Objects.requireNonNull(restTemplate.getForObject(
-                urlTemplate,
-                JobList.class)).getJobs();
+                urlTemplate, Object.class));
+
     }
 
-    public Job getJobDetail(Long id) {
+    public Object getJobDetail(Long id) {
         String urlTemplate = UriComponentsBuilder.fromHttpUrl(dansMultiUrl.getDetail())
                 .encode()
                 .toUriString();
         return Objects.requireNonNull(restTemplate.getForObject(
                 urlTemplate,
-                Job.class, id));
+                Object.class, id));
     }
 
 
