@@ -25,7 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/jobs").permitAll()
                 .antMatchers("/jobs/{id}").permitAll();
 
-        //iam forget to implement this security config
 
     }
 }

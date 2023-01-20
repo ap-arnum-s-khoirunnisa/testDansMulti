@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Arnum Sari Khoirunnisa
@@ -22,6 +22,7 @@ public class JobController {
     private final DansRestClient dansRestClient;
     private final GeneratedJwt generatedJwt;
 
+
 //    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/jobs")
     public ResponseEntity<Object> getJobs(@RequestHeader("Authorization") String authorization) {
@@ -31,15 +32,26 @@ public class JobController {
             }
 
             // Fetch the jobs from the external API
-            Object jobs = dansRestClient.getJobs();
+            List<Job> jobs = dansRestClient.getJobs();
+            List<Job> jobs2 = new ArrayList<>();
+            HashMap<String,Integer> jobss = new HashMap<>();
+            for(Job job : jobs){
+                if(jobss.containsKey(job.getLocation())){
+                    jobss.put(job.getLocation(),jobss.get(job.getLocation())+1);
+                }else{
+                    jobss.put(job.getLocation(),1);
+                    jobs2.add(job);
+                }
+            }
 
 
-            return new ResponseEntity<>(jobs, HttpStatus.OK);
+
+            return new ResponseEntity<>(jobs2, HttpStatus.OK);
         }
 
     @GetMapping("/jobs/{id}")
     public ResponseEntity<Object> getJobDetail(@RequestHeader("Authorization") String authorization,
-                                                  @PathVariable("id") Long id) {
+                                                  @PathVariable("id") String id) {
 
 //        String jwt = authorization.substring(7);
 
@@ -53,4 +65,8 @@ public class JobController {
 
         return new ResponseEntity<>(job, HttpStatus.OK);
     }
+
+
+
+
     }
